@@ -17,13 +17,8 @@ import {
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 import { formatDate } from '@/lib/utils/formatDate';
 import { joinGroup } from '@/lib/group-actions';
-import dynamic from 'next/dynamic';
 import { ContributionProgress } from '@/components/groups/ContributionProgress';
-
-const PaystackContributionButton = dynamic(
-  () => import('@/components/payments/PaystackButton').then(mod => mod.PaystackContributionButton),
-  { ssr: false }
-);
+import { MemberActionCenter } from './MemberActionCenter';
 
 export default async function MemberGroupDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = await params;
@@ -304,21 +299,11 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
 
           {isMember && (
             <Card title="Manage Savings" className="glass">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <PaystackContributionButton 
-                  email={user.email!}
-                  amount={group.contribution_amount}
-                  metadata={{
-                    userId: user.id,
-                    groupId: group.id,
-                    type: 'contribution',
-                    cycleId: activeCycle?.id
-                  }}
-                />
-                <Link href="/dashboard/wallet">
-                  <Button variant="secondary" style={{ width: '100%' }}>View Receipt History</Button>
-                </Link>
-              </div>
+              <MemberActionCenter 
+                user={{ id: user.id, email: user.email! }}
+                group={{ id: group.id, contribution_amount: group.contribution_amount }}
+                activeCycle={activeCycle}
+              />
             </Card>
           )}
 
