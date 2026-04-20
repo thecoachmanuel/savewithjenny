@@ -3,7 +3,7 @@
 import React from 'react';
 import { jumpToCycle } from '@/lib/payout-actions';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, RefreshCw } from 'lucide-react';
+import { ArrowRight, RefreshCcw } from 'lucide-react';
 
 interface CycleJumpFormProps {
   groupId: string;
@@ -17,15 +17,20 @@ export function CycleJumpForm({ groupId, currentCycle, totalCycles, status }: Cy
   const [selectedCycle, setSelectedCycle] = React.useState(currentCycle || 1);
 
   async function handleJump() {
-    if (selectedCycle === currentCycle) return;
+    if (selectedCycle === currentCycle && status !== 'completed') return;
     
-    const confirmMsg = selectedCycle < currentCycle 
-      ? `Are you sure you want to jump BACK to Round ${selectedCycle}? This will reset future rounds to 'Scheduled'.`
-      : `Are you sure you want to jump to Round ${selectedCycle}? Skipped rounds will be marked as 'Completed'.`;
-
-    if (!confirm(confirmMsg)) return;
-
     setIsUpdating(true);
+    
+    const confirmMsg = status === 'completed'
+      ? `Are you sure you want to REACTIVATE this group and jump to Round ${selectedCycle}?`
+      : selectedCycle < currentCycle 
+        ? `Are you sure you want to jump BACK to Round ${selectedCycle}? This will reset future rounds to 'Scheduled'.`
+        : `Are you sure you want to jump to Round ${selectedCycle}? Skipped rounds will be marked as 'Completed'.`;
+
+    if (!confirm(confirmMsg)) {
+      setIsUpdating(false);
+      return;
+    }
     const result = await jumpToCycle(groupId, selectedCycle);
     setIsUpdating(false);
 
@@ -40,7 +45,7 @@ export function CycleJumpForm({ groupId, currentCycle, totalCycles, status }: Cy
         <select
           value={selectedCycle}
           onChange={(e) => setSelectedCycle(parseInt(e.target.value))}
-          disabled={isUpdating || status === 'completed'}
+          disabled={isUpdating}
           className="input"
           style={{ flex: 1, padding: '0.5rem', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--glass-border)' }}
         >
@@ -54,7 +59,6 @@ export function CycleJumpForm({ groupId, currentCycle, totalCycles, status }: Cy
           isLoading={isUpdating}
           variant="secondary"
           style={{ padding: '0.5rem 1rem' }}
-          disabled={status === 'completed'}
         >
           Jump
         </Button>

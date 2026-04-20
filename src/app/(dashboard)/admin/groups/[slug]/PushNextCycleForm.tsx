@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react';
+import { ArrowRight, AlertTriangle, RefreshCcw } from 'lucide-react';
 import { pushNextCycle } from '@/lib/payout-actions';
 import { useRouter } from 'next/navigation';
 
@@ -17,11 +17,28 @@ export function PushNextCycleForm({ groupId, groupSlug, currentCycle, totalMembe
   const [isPending, startTransition] = useTransition();
   const [errorStatus, setErrorStatus] = useState<{ message: string, code?: string, details?: any } | null>(null);
   const router = useRouter();
+  const isMounted = React.useRef(true);
+
+  React.useEffect(() => {
+    return () => { isMounted.current = false; };
+  }, []);
 
   const handlePush = (allowUnpaid: boolean = false) => {
+    if (!isMounted.current) return;
+    
+    // Safety check for finishing rotation
+    const isLastRound = currentCycle >= totalMembers;
+    if (isLastRound && !allowUnpaid) {
+      if (!confirm("Are you sure you want to FINISH this rotation? This will close the group and mark all rounds as completed.")) {
+        return;
+      }
+    }
+
     setErrorStatus(null);
     startTransition(async () => {
       const result = await pushNextCycle(groupId, allowUnpaid);
+      if (!isMounted.current) return;
+      
       if (result?.error) {
         setErrorStatus({
           message: result.error,
@@ -47,7 +64,7 @@ export function PushNextCycleForm({ groupId, groupSlug, currentCycle, totalMembe
           style={{ width: '100%' }}
           rightIcon={<ArrowRight size={18} />}
         >
-          {isLastRound ? 'Finish Rotation' : `Start Round ${currentCycle + 1}`}
+          {currentCycle === 0 ? 'Start Rotation' : `Start Round ${currentCycle + 1}`}
         </Button>
       ) : errorStatus.code === 'PENDING_PAYMENTS' ? (
         <div style={{ 

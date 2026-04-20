@@ -11,7 +11,8 @@ import {
   Share2, 
   UserPlus,
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  RefreshCcw as RefreshCwIcon
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 import { notFound } from 'next/navigation';
@@ -21,7 +22,9 @@ import { AddMemberForm } from './AddMemberForm';
 import { MemberPositionForm } from './MemberPositionForm';
 import { CycleJumpForm } from './CycleJumpForm';
 import { PushNextCycleForm } from './PushNextCycleForm';
+import { CompleteRotationForm } from './CompleteRotationForm';
 import { ContributionProgress } from '@/components/groups/ContributionProgress';
+import { AdminPaymentMatrix } from '@/components/groups/AdminPaymentMatrix';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function AdminGroupDetailPage({ params }: { params: { slug: string } }) {
@@ -53,13 +56,23 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
       .select('id, full_name, email')
       .order('full_name', { ascending: true });
 
-    // 1c. Fetch Cycle Info
-    const { data: currentCycle } = await supabase
+    // 1c. Fetch Active Cycle Info
+    let { data: currentCycle } = await supabase
       .from('group_cycles')
       .select('*, profiles:payout_recipient(full_name)')
       .eq('group_id', group.id)
-      .eq('cycle_number', group.current_cycle_number || 1)
-      .single();
+      .eq('status', 'active')
+      .maybeSingle();
+
+    if (!currentCycle) {
+      const { data: firstCycle } = await supabase
+        .from('group_cycles')
+        .select('*, profiles:payout_recipient(full_name)')
+        .eq('group_id', group.id)
+        .eq('cycle_number', (group as any).current_cycle_number || 1)
+        .maybeSingle();
+      currentCycle = firstCycle;
+    }
 
   return (
     <div className="group-detail-page">
@@ -75,50 +88,111 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
           <ChevronLeft size={16} /> Back to Groups
         </Link>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{group.name}</h1>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <div className={
-                  group.status === 'active' ? 'badge badge-success' : 
-                  group.status === 'completed' ? 'badge badge-neutral' : 
-                  'badge badge-warning'
-                }>
-                  {group.status}
-                </div>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Created by {group.profiles?.full_name}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
+              <h1 style={{ fontSize: '2.5rem', margin: 0 }}>{group.name}</h1>
+              <div className={
+                group.status === 'active' ? 'badge badge-success' : 
+                group.status === 'completed' ? 'badge badge-neutral' : 
+                'badge badge-warning'
+              }>
+                {group.status}
               </div>
             </div>
-            
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <InviteLinkButton slug={group.slug} />
-              <Link href={`/admin/groups/${group.slug}/edit`}>
-                <Button leftIcon={<Settings size={18} />}>Manage Group</Button>
-              </Link>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', margin: 0 }}>
+              Management System Overview • Created by {group.profiles?.full_name}
+            </p>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <InviteLinkButton slug={group.slug} />
+            <Link href={`/admin/groups/${group.slug}/edit`}>
+              <Button leftIcon={<Settings size={18} />} variant="secondary">Configure</Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* NEW: Action Center Hero Banner */}
+      <Card className="glass" style={{ marginBottom: '2.5rem', border: '1px solid var(--accent-primary)', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+            <div style={{ 
+              width: '48px', height: '48px', borderRadius: '1rem', background: 'rgba(16, 185, 129, 0.1)', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)'
+            }}>
+              <Calendar size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Admin Action Center
+              </div>
+              <h2 style={{ margin: '0.25rem 0', fontSize: '1.5rem' }}>
+                {group.status === 'active' ? (
+                  currentCycle ? `Currently in Round ${currentCycle.cycle_number}` : 'Rotation Ready to Start'
+                ) : group.status === 'completed' ? 'Rotation Finished Successfully' : 'Group in Standby'}
+              </h2>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                {group.status === 'active' 
+                  ? `Next Payout: ${currentCycle?.profiles?.full_name || 'N/A'} for ${formatCurrency(currentCycle?.payout_amount || 0)}`
+                  : 'Wait for more members to join or manually initialize the rotation.'}
+              </p>
             </div>
           </div>
-        </header>
+          
+          <div style={{ minWidth: '200px' }}>
+            {group.status === 'active' && currentCycle && (
+              currentCycle.cycle_number >= (members?.length || 0) ? (
+                <CompleteRotationForm groupId={group.id} />
+              ) : (
+                <PushNextCycleForm 
+                  groupId={group.id} 
+                  groupSlug={group.slug} 
+                  currentCycle={currentCycle.cycle_number} 
+                  totalMembers={members?.length || 0} 
+                />
+              )
+            )}
+            {group.status === 'pending' && members && members.length >= 2 && (
+               <PushNextCycleForm 
+                  groupId={group.id} 
+                  groupSlug={group.slug} 
+                  currentCycle={0} 
+                  totalMembers={members.length} 
+               />
+            )}
+          </div>
+        </div>
+      </Card>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Group Overview Stats */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-              <Card className="glass">
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>TOTAL POOL</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(group.total_pool || 0)}</div>
+              <Card className="glass" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem', fontWeight: 700 }}>LIQUIDITY POOL</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: 900 }}>{formatCurrency(group.total_pool || 0)}</div>
               </Card>
               <Card className="glass">
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>CONTRIBUTION</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(group.contribution_amount)}</div>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>MEMBER CONTRIBUTION</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: 900 }}>{formatCurrency(group.contribution_amount)}</div>
               </Card>
-              <Card className="glass">
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>CURRENT CYCLE</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>
-                  {group.status === 'completed' ? 'Rotation Finished' : 
-                   group.current_cycle_number ? `Round ${group.current_cycle_number}` : 'Standby'}
+              <Card className="glass" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>ACTIVE STATUS</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+                  {group.status === 'completed' ? 'COMPLETE' : 
+                   currentCycle ? `ROUND ${currentCycle.cycle_number}` : 'STANDBY'}
                 </div>
               </Card>
             </div>
+
+            {/* New: Robust Payment Tracking Matrix */}
+            <AdminPaymentMatrix 
+              groupId={group.id} 
+              contributionAmount={group.contribution_amount} 
+              totalPool={group.total_pool || 0}
+            />
 
             {/* Contribution Progress Tracker for Admins */}
             {currentCycle && (
@@ -207,50 +281,39 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
               </div>
             </Card>
 
-            {/* Quick Actions */}
-            <Card title="Orchestration" className="glass">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            {/* Orchestration Controls */}
+            <Card className="glass" style={{ border: '1px solid var(--glass-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <Settings size={20} className="text-gradient" />
+                <h3 style={{ margin: 0, fontSize: '1rem' }}>Command Console</h3>
+              </div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600 }}>NEXT STEP</div>
-                  {group.status !== 'completed' ? (
-                    <PushNextCycleForm 
-                      groupId={group.id} 
-                      groupSlug={group.slug} 
-                      currentCycle={group.current_cycle_number || 0} 
-                      totalMembers={members?.length || 0} 
-                    />
-                  ) : (
-                    <div style={{ padding: '1rem', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '0.5rem', textAlign: 'center', color: 'var(--accent-primary)', fontSize: '0.875rem', fontWeight: 600 }}>
-                      Rotation Completed
-                    </div>
-                  )}
-                </div>
-
-                <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '1.25rem' }}>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600 }}>MANUAL OVERRIDE</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Round Override</div>
                   <CycleJumpForm 
                     groupId={group.id} 
-                    currentCycle={group.current_cycle_number} 
+                    currentCycle={currentCycle?.cycle_number || 1} 
                     totalCycles={group.max_members} 
                     status={group.status}
                   />
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '1.25rem' }}>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600 }}>MAINTENANCE</div>
+                <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>System Sync</div>
                   <form action={generateRotationSchedule.bind(null, group.id)}>
                     <Button 
                       type="submit" 
                       variant="secondary" 
-                      style={{ width: '100%', justifyContent: 'flex-start' }} 
-                      leftIcon={<Calendar size={18} />}
+                      style={{ width: '100%', justifyContent: 'flex-start', background: 'rgba(255, 255, 255, 0.02)' }} 
+                      leftIcon={<RefreshCwIcon size={18} />}
                       disabled={group.status === 'completed'}
                     >
-                      Sync & Rebuild Schedule
+                      Sync Rotation Data
                     </Button>
                   </form>
                   <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.5rem', textAlign: 'center' }}>
-                    Ensures positions and payouts are correctly synced with member list.
+                    Re-aligns payout recipients with the latest member positions.
                   </p>
                 </div>
               </div>
@@ -273,9 +336,9 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
             <Link href="/admin/groups">
               <Button variant="secondary">Back to Groups</Button>
             </Link>
-            <Button onClick={() => typeof window !== 'undefined' && window.location.reload()}>
-              Retry Connection
-            </Button>
+            <Link href={`/admin/groups/${group?.slug || slug}`}>
+              <Button>Retry Connection</Button>
+            </Link>
           </div>
         </Card>
       </div>

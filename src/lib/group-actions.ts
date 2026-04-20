@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath, unstable_noStore as noStore } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { syncRotationRecipients } from './payout-actions'
+import { generateRotationSchedule } from './payout-actions'
 
 function slugify(text: string) {
   return text
@@ -295,7 +295,7 @@ export async function updateMemberPosition(groupId: string, userId: string, newP
     }
 
     // 4. Sync rotation recipients automatically
-    await syncRotationRecipients(groupId);
+    await generateRotationSchedule(groupId);
 
     // 5. Get group slug for revalidation
     const { data: group } = await supabase.from('groups').select('slug').eq('id', groupId).single();

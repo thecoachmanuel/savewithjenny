@@ -27,40 +27,49 @@ export function PaystackContributionButton({
   onSuccess,
   onClose
 }: PaystackContributionButtonProps) {
-  const [isVerifying, setIsVerifying] = React.useState(false);
-  const [isSuccess, setIsSuccess] = React.useState(false);
-  const router = useRouter();
+  const isMounted = React.useRef(true);
 
-  const config = {
+  React.useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  const config = React.useMemo(() => ({
     reference: (new Date()).getTime().toString(),
     email: email,
-    amount: Math.round(amount * 100), // Convert to kobo
+    amount: Math.round(amount * 100),
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
     metadata: metadata,
-  };
+  }), [email, amount, metadata]);
 
   const initializePayment = usePaystackPayment(config);
 
   const handleSuccess = async (reference: any) => {
+    if (!isMounted.current) return;
     setIsVerifying(true);
     try {
       const result = await verifyAndProcessPayment(reference.reference);
-      if (result.success) {
-        setIsSuccess(true);
-        router.refresh();
-      } else {
-        alert('Payment verification failed. Please contact support if you were debited.');
+      if (isMounted.current) {
+        if (result.success) {
+          setIsSuccess(true);
+          router.refresh();
+        } else {
+          alert('Payment verification failed. Please contact support if you were debited.');
+        }
       }
     } catch (err) {
       console.error('Verification error:', err);
     } finally {
-      setIsVerifying(false);
+      if (isMounted.current) {
+        setIsVerifying(false);
+      }
       if (onSuccess) onSuccess(reference);
     }
   };
 
   const handleClose = () => {
-    if (onClose) onClose();
+    if (onClose && isMounted.current) onClose();
   };
 
   if (isSuccess) {

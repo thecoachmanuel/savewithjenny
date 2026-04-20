@@ -82,7 +82,18 @@ export async function ContributionProgress({ groupId, cycleId, cycleNumber, cont
     const isFullyPaid = paidCount === totalCount && totalCount > 0;
 
     return (
-    <Card className="glass" style={{ padding: '1.5rem', position: 'relative', overflow: 'hidden' }}>
+    <Card className="glass" style={{ padding: '1.5rem', position: 'relative', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+      {/* Background Decorative Gradient */}
+      <div style={{ 
+        position: 'absolute', 
+        top: 0, 
+        right: 0, 
+        width: '150px', 
+        height: '150px', 
+        background: isFullyPaid ? 'radial-gradient(circle at top right, rgba(16, 185, 129, 0.15), transparent)' : 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent)',
+        pointerEvents: 'none'
+      }} />
+
       {isFullyPaid ? (
         <div style={{ 
           position: 'absolute', 
@@ -90,15 +101,16 @@ export async function ContributionProgress({ groupId, cycleId, cycleNumber, cont
           right: '1rem', 
           background: 'rgba(16, 185, 129, 0.1)', 
           color: 'var(--accent-primary)',
-          padding: '0.25rem 0.75rem',
+          padding: '0.35rem 0.85rem',
           borderRadius: '2rem',
-          fontSize: '0.75rem',
-          fontWeight: 700,
+          fontSize: '0.7rem',
+          fontWeight: 800,
           border: '1px solid var(--accent-primary)',
           display: 'flex',
           alignItems: 'center',
           gap: '0.4rem',
-          zIndex: 10
+          zIndex: 10,
+          boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
         }}>
           <CheckCircle2 size={14} />
           READY TO ROTATE
@@ -108,57 +120,59 @@ export async function ContributionProgress({ groupId, cycleId, cycleNumber, cont
           position: 'absolute', 
           top: '1rem', 
           right: '1rem', 
-          background: 'rgba(245, 158, 11, 0.1)', 
-          color: '#f59e0b',
-          padding: '0.25rem 0.75rem',
+          background: 'rgba(59, 130, 246, 0.1)', 
+          color: '#3b82f6',
+          padding: '0.35rem 0.85rem',
           borderRadius: '2rem',
-          fontSize: '0.75rem',
-          fontWeight: 700,
-          border: '1px solid #f59e0b',
+          fontSize: '0.7rem',
+          fontWeight: 800,
+          border: '1px solid #3b82f6',
           display: 'flex',
           alignItems: 'center',
           gap: '0.4rem',
           zIndex: 10
         }}>
-          <AlertCircle size={14} />
-          PAYMENTS PENDING
+          <Clock size={14} />
+          {paidCount}/{totalCount} PAID
         </div>
       )}
       
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.25rem' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-            <h3 style={{ fontSize: '1.125rem', margin: 0 }}>Tracking <span className="text-gradient">Round {resolvedCycleNumber}</span></h3>
-          </div>
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0 }}>
-            {paidCount} of {totalCount} members have contributed
-          </p>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+          <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: 'var(--accent-primary)' }}></div>
+          <h3 style={{ fontSize: '1.25rem', margin: 0, letterSpacing: '-0.02em' }}>
+            Tracking <span className="text-gradient">Round {resolvedCycleNumber}</span>
+          </h3>
         </div>
-        {!isFullyPaid && (
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--accent-primary)' }}>{progressPercent}%</div>
-          </div>
-        )}
+        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0 }}>
+          {isFullyPaid ? "All members have contributed. You can now advance the cycle." : `${totalCount - paidCount} members pending for this round.`}
+        </p>
       </div>
 
-      {/* Progress Bar */}
-      <div style={{ 
-        height: '10px', 
-        background: 'rgba(15, 23, 42, 0.3)', 
-        borderRadius: '5px', 
-        overflow: 'hidden',
-        marginBottom: '2rem',
-        border: '1px solid var(--glass-border)',
-        position: 'relative'
-      }}>
-        <div style={{ 
-          height: '100%', 
-          width: `${progressPercent}%`, 
-          background: isFullyPaid ? 'var(--accent-primary)' : 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))',
-          boxShadow: isFullyPaid ? '0 0 20px var(--accent-primary)' : 'none',
-          transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)',
-          borderRadius: '5px'
-        }} />
+      {/* Progress Visualization */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ 
+            height: '12px', 
+            background: 'rgba(15, 23, 42, 0.4)', 
+            borderRadius: '6px', 
+            overflow: 'hidden',
+            border: '1px solid var(--glass-border)',
+            position: 'relative'
+          }}>
+            <div style={{ 
+              height: '100%', 
+              width: `${progressPercent}%`, 
+              background: isFullyPaid ? 'var(--accent-primary)' : 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))',
+              boxShadow: isFullyPaid ? '0 0 20px var(--accent-primary)' : 'none',
+              transition: 'width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              borderRadius: '6px'
+            }} />
+          </div>
+        </div>
+        <div style={{ fontSize: '1.25rem', fontWeight: 900, color: isFullyPaid ? 'var(--accent-primary)' : 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
+          {progressPercent}%
+        </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

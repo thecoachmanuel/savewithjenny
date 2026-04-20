@@ -56,12 +56,23 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
     .order('scheduled_date', { ascending: true });
 
   // 4. Fetch Active Cycle for Progress Tracking
-  const { data: activeCycle } = await supabase
+  // We use status='active' as the source of truth
+  let { data: activeCycle } = await supabase
     .from('group_cycles')
-    .select('id')
+    .select('*')
     .eq('group_id', group.id)
-    .eq('cycle_number', group.current_cycle_number || 1)
-    .single();
+    .eq('status', 'active')
+    .maybeSingle();
+
+  if (!activeCycle) {
+    const { data: firstCycle } = await supabase
+      .from('group_cycles')
+      .select('*')
+      .eq('group_id', group.id)
+      .eq('cycle_number', (group as any).current_cycle_number || 1)
+      .maybeSingle();
+    activeCycle = firstCycle;
+  }
 
   return (
     <div className="group-detail-page">
@@ -157,20 +168,23 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
                 </div>
               </div>
             </Card>
-            <Card className="glass" style={{ border: '1px solid var(--accent-primary)', background: 'rgba(16, 185, 129, 0.05)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ 
-                  width: '40px', height: '40px', borderRadius: '10px', background: 'var(--accent-primary)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000'
-                }}>
-                  <TrendingUp size={20} />
+            {/* Key Stats Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', marginBottom: '2rem' }}>
+              <Card className="glass" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>YOUR BALANCE</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(profile?.wallet_balance || 0)}</div>
+              </Card>
+              <Card className="glass">
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>PAID TO DATE</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(memberContribs?.reduce((sum, c) => sum + (c.amount || 0), 0) || 0)}</div>
+              </Card>
+              <Card className="glass" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>ACTIVE ROUND</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>
+                   {activeCycle?.cycle_number || (group as any).current_cycle_number || 1}
                 </div>
-                <div>
-                  <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Active Round</div>
-                  <div style={{ fontWeight: 700 }}>{group.current_cycle_number || 1} / {group.max_members}</div>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
 
           {/* New Contribution Progress Tracker */}
@@ -178,7 +192,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
             <ContributionProgress 
               groupId={group.id} 
               cycleId={activeCycle.id} 
-              cycleNumber={group.current_cycle_number || 1}
+              cycleNumber={activeCycle.cycle_number}
               contributionAmount={group.contribution_amount} 
             />
           )}
