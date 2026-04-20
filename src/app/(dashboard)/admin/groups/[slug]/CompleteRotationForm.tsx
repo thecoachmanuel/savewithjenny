@@ -73,7 +73,7 @@ export function CompleteRotationForm({ groupId }: CompleteRotationFormProps) {
         </Button>
         <Button 
            size="sm"
-           variant="outline" 
+           variant="ghost" 
            style={{ flex: 1, fontSize: '0.75rem' }}
            onClick={() => setShowConfirm(false)}
            disabled={isPending}
