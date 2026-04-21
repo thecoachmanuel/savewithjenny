@@ -141,7 +141,7 @@ export async function AdminPaymentMatrix({ groupId, contributionAmount }: AdminP
             {members.map(member => (
               <tr key={member.user_id} className="hover:bg-white/5 transition-colors">
                 <td style={{ padding: '1rem', fontWeight: 700, position: 'sticky', left: 0, background: 'var(--bg-primary)', zIndex: 5, borderBottom: '1px solid var(--glass-border)' }}>
-                  {member.profiles?.full_name}
+                  {Array.isArray(member.profiles) ? member.profiles[0]?.full_name : (member.profiles as any)?.full_name}
                 </td>
                 {cycleStats.map(cycle => {
                   const isPaid = cycle.id.toString().startsWith('missing') ? false : paymentMap.has(`${member.user_id}-${cycle.id}`);
