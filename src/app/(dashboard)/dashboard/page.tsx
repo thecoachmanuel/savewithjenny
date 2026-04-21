@@ -65,30 +65,30 @@ export default async function MemberDashboardPage() {
     <div className="member-dashboard">
       <header style={{ marginBottom: '2.5rem' }} className="header-flex">
         <div>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Hello, <span className="text-gradient">{profile?.full_name?.split(' ')[0]}</span></h1>
-          <p style={{ color: 'var(--text-secondary)' }}>Welcome back to your thrift Command Center.</p>
+          <h1 style={{ marginBottom: '0.25rem' }}>Hello, <span className="text-gradient">{profile?.full_name?.split(' ')[0]}</span></h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Welcome back to your thrift Command Center.</p>
         </div>
       </header>
 
       <div className="dashboard-grid">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {/* Main Highlights */}
           <div className="stats-grid">
-            <Card className="glass" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%)', padding: '1.5rem' }}>
-               <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem', fontWeight: 600 }}>WALLET BALANCE</div>
-               <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--accent-primary)' }}>{formatCurrency(Number(profile?.wallet_balance) || 0)}</div>
+            <Card className="glass shadow-sm" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%)' }}>
+               <div style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', marginBottom: '0.5rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>WALLET BALANCE</div>
+               <div style={{ fontSize: 'var(--font-size-h1)', fontWeight: 800, color: 'var(--accent-primary)' }}>{formatCurrency(Number(profile?.wallet_balance) || 0)}</div>
                <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Available for withdrawal</p>
             </Card>
 
-            <Card className="glass" style={{ padding: '1.5rem' }}>
-               <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem', fontWeight: 600 }}>TOTAL CONTRIBUTED</div>
-               <div style={{ fontSize: '1.75rem', fontWeight: 800 }}>{formatCurrency(Number(profile?.total_contributions) || 0)}</div>
+            <Card className="glass shadow-sm">
+               <div style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', marginBottom: '0.5rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>TOTAL CONTRIBUTED</div>
+               <div style={{ fontSize: 'var(--font-size-h1)', fontWeight: 800 }}>{formatCurrency(Number(profile?.total_contributions) || 0)}</div>
                <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Across all groups</p>
             </Card>
 
-            <Card className="glass" style={{ padding: '1.5rem' }}>
-               <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem', fontWeight: 600 }}>PAYOUTS RECEIVED</div>
-               <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#10b981' }}>{formatCurrency(Number(profile?.total_payouts_received) || 0)}</div>
+            <Card className="glass shadow-sm">
+               <div style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', marginBottom: '0.5rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>PAYOUTS RECEIVED</div>
+               <div style={{ fontSize: 'var(--font-size-h1)', fontWeight: 800, color: '#10b981' }}>{formatCurrency(Number(profile?.total_payouts_received) || 0)}</div>
                <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Lifecycle earnings</p>
             </Card>
           </div>
@@ -96,16 +96,16 @@ export default async function MemberDashboardPage() {
           {/* Quick Stats: Upcoming Payout */}
           {nextPayout && (
             <div style={{ marginTop: '0.5rem' }}>
-              <h2 style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>Next <span className="text-gradient">Scheduled Payout</span></h2>
-              <Card className="glass" style={{ padding: '1.5rem', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ marginBottom: '1rem' }}>Next <span className="text-gradient">Scheduled Payout</span></h2>
+              <Card className="glass shadow-sm" style={{ padding: '1.25rem', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
                   <div>
-                    <div style={{ fontSize: '2rem', fontWeight: 800, color: '#3b82f6' }}>{formatCurrency(Number(nextPayout.amount))}</div>
-                    <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>From {nextPayout.groups?.name}</div>
+                    <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#3b82f6' }}>{formatCurrency(Number(nextPayout.amount))}</div>
+                    <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>From {nextPayout.groups?.name}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{formatDate(nextPayout.scheduled_date)}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Estimated Payout Date</div>
+                    <div style={{ fontSize: '0.8125rem', fontWeight: 600 }}>{formatDate(nextPayout.scheduled_date)}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Estimated Payout Date</div>
                   </div>
                 </div>
               </Card>
@@ -114,10 +114,10 @@ export default async function MemberDashboardPage() {
         </div>
 
         {/* Sidebar / Quick Tips */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <Card title="Trust Score" className="glass">
-             <div style={{ fontSize: '2.5rem', fontWeight: 800, textAlign: 'center', margin: '1rem 0' }}>{trustScore}</div>
-             <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <Card title="Trust Score" className="glass shadow-sm">
+             <div style={{ fontSize: '2.5rem', fontWeight: 800, textAlign: 'center', margin: '0.5rem 0' }}>{trustScore}</div>
+             <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '1.25rem' }}>
                {trustScore > 800 ? "Your score is Excellent! You're eligible for higher zero-interest loans." : "Increase your score by making regular on-time contributions."}
              </p>
              <div style={{ height: '4px', background: 'var(--bg-tertiary)', borderRadius: '2px', overflow: 'hidden' }}>
@@ -125,18 +125,18 @@ export default async function MemberDashboardPage() {
              </div>
           </Card>
 
-          <Card title="Quick Resources" className="glass">
+          <Card title="Quick Resources" className="glass shadow-sm">
              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.875rem' }}>
+                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.8125rem' }}>
                    <CheckCircle2 size={16} className="text-secondary" style={{ flexShrink: 0 }} />
                    <span>How to maximize your rotation earnings</span>
                 </div>
-                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.875rem' }}>
+                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.8125rem' }}>
                    <CheckCircle2 size={16} className="text-secondary" style={{ flexShrink: 0 }} />
                    <span>Eligibility for business expansion loans</span>
                  </div>
-                <Link href="/dashboard/profile" style={{ marginTop: '1rem' }}>
-                  <Button variant="secondary" style={{ width: '100%' }}>Complete KYC</Button>
+                <Link href="/dashboard/profile" style={{ marginTop: '0.5rem' }}>
+                   <Button variant="secondary" style={{ width: '100%', fontSize: '0.8125rem' }}>Complete KYC</Button>
                 </Link>
              </div>
           </Card>

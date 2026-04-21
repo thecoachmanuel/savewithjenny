@@ -41,7 +41,10 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
             display: none !important;
           }
           .content-area {
-            padding: 1rem !important;
+            padding: var(--page-padding) !important;
+          }
+          .topbar-header {
+            padding: 0 1rem !important;
           }
         }
       `}</style>
@@ -78,11 +81,13 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         position: 'relative',
-        transition: 'margin-left 0.3s ease'
+        transition: 'margin-left 0.3s ease',
+        maxWidth: '100vw',
+        overflowX: 'hidden'
       }} className="main-content">
         
         {/* Topbar */}
-        <header className="glass" style={{
+        <header className="glass topbar-header" style={{
           height: '70px',
           display: 'flex',
           alignItems: 'center',
@@ -97,7 +102,7 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
           top: 0,
           zIndex: 50
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {/* Mobile Menu Toggle */}
             <button 
               onClick={toggleSidebar}
@@ -110,7 +115,7 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
               }}
               id="sidebar-toggle"
             >
-              <Menu size={24} />
+              <Menu size={20} />
             </button>
 
             <div className="search-container" style={{ 
@@ -120,9 +125,9 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
               background: 'var(--bg-tertiary)',
               padding: '0.5rem 1rem',
               borderRadius: '0.5rem',
-              width: '300px'
+              width: 'clamp(150px, 30vw, 300px)'
             }}>
-              <Search size={18} color="var(--text-muted)" />
+              <Search size={16} color="var(--text-muted)" />
               <input 
                 type="text" 
                 placeholder="Search..." 
@@ -138,28 +143,28 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <button className="btn-ghost" style={{ position: 'relative', padding: '0.5rem' }}>
-              <Bell size={20} />
+              <Bell size={18} />
               <span style={{ 
                 position: 'absolute', 
                 top: '0.25rem', 
                 right: '0.25rem', 
-                width: '8px', 
-                height: '8px', 
+                width: '6px', 
+                height: '6px', 
                 background: 'var(--accent-primary)', 
                 borderRadius: '50%',
-                border: '2px solid var(--bg-primary)'
+                border: '1.5px solid var(--bg-primary)'
               }}></span>
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingLeft: '1.5rem', borderLeft: '1px solid var(--glass-border)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingLeft: '1rem', borderLeft: '1px solid var(--glass-border)' }}>
               <div className="user-info" style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{profile?.full_name}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{profile?.role}</div>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 600 }}>{profile?.full_name?.split(' ')[0]}</div>
+                <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{profile?.role}</div>
               </div>
               <div style={{ 
-                width: '40px', 
-                height: '40px', 
+                width: '32px', 
+                height: '32px', 
                 borderRadius: '50%', 
                 background: 'var(--bg-tertiary)',
                 display: 'flex',
@@ -171,7 +176,7 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
                 {profile?.avatar_url ? (
                   <img src={profile.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  <UserIcon size={20} color="var(--text-secondary)" />
+                  <UserIcon size={16} color="var(--text-secondary)" />
                 )}
               </div>
             </div>

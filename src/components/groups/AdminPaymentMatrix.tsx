@@ -102,16 +102,16 @@ export async function AdminPaymentMatrix({ groupId, contributionAmount }: AdminP
 
   return (
     <Card className="glass" style={{ padding: '0', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
-      <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.01)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ padding: 'var(--card-padding)', borderBottom: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.01)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.25rem', letterSpacing: '-0.02em' }}>Financial <span className="text-gradient">Command Matrix</span></h3>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+            <h3 style={{ margin: 0, letterSpacing: '-0.02em', fontSize: 'var(--font-size-h3)' }}>Financial <span className="text-gradient">Command Matrix</span></h3>
+            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
               Real-time audit of contributions and liquidity across all rotation rounds.
             </p>
           </div>
-          <div style={{ padding: '0.5rem 1rem', borderRadius: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 700 }}>LIVE AUDIT ACTIVE</span>
+          <div style={{ padding: '0.4rem 0.75rem', borderRadius: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+            <span style={{ fontSize: '0.65rem', color: 'var(--accent-primary)', fontWeight: 800 }}>LIVE AUDIT ACTIVE</span>
           </div>
         </div>
       </div>

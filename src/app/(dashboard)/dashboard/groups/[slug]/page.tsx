@@ -92,28 +92,28 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
           alignItems: 'center', 
           gap: '0.5rem', 
           color: 'var(--text-secondary)',
-          fontSize: '0.875rem',
+          fontSize: '0.8125rem',
           marginBottom: '1rem'
         }} className="hover:text-white">
-          <ChevronLeft size={16} /> Back to Browse
+          <ChevronLeft size={14} /> Back to Browse
         </Link>
         
         <div className="header-flex">
           <div>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{group.name}</h1>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <div className={group.status === 'active' ? 'badge badge-success' : 'badge badge-warning'}>{group.status}</div>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Managed by {group.profiles?.full_name}</span>
+            <h1 style={{ marginBottom: '0.5rem' }}>{group.name}</h1>
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <div className={group.status === 'active' ? 'badge badge-success' : 'badge badge-warning'} style={{ fontSize: '0.65rem' }}>{group.status}</div>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Managed by {group.profiles?.full_name}</span>
             </div>
           </div>
           
           {!isMember ? (
             <form action={joinGroup.bind(null, group.id) as any}>
-              <Button size="lg" className="pulse-success">Join this Circle</Button>
+              <Button size="lg" className="pulse-success" style={{ width: '100%' }}>Join Circle</Button>
             </form>
           ) : (
-            <div className="badge badge-success" style={{ padding: '0.75rem 1.5rem', borderRadius: '0.75rem' }}>
-              <CheckCircle2 size={18} style={{ marginRight: '0.75rem' }} />
+            <div className="badge badge-success" style={{ padding: '0.6rem 1.25rem', borderRadius: '0.75rem', fontSize: '0.8125rem' }}>
+              <CheckCircle2 size={16} style={{ marginRight: '0.5rem' }} />
               Active Member
             </div>
           )}
@@ -123,27 +123,27 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
       <div className="dashboard-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Main Info Card */}
-          <Card className="glass" style={{ padding: '2.5rem' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>About this <span className="text-gradient">Circle</span></h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.125rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>
+          <Card className="glass shadow-sm">
+            <h2 style={{ marginBottom: '1.25rem' }}>About this <span className="text-gradient">Circle</span></h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
               {group.description || 'This group is dedicated to rotating savings and collective growth among its members.'}
             </p>
 
             <div className="stats-grid">
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>CONTRIBUTION</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(group.contribution_amount)}</div>
-                <div style={{ fontSize: '0.875rem', color: 'var(--accent-primary)', marginTop: '0.25rem' }}>Per {group.frequency}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.65rem', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase' }}>CONTRIBUTION</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>{formatCurrency(group.contribution_amount)}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--accent-primary)', marginTop: '0.15rem' }}>Per {group.frequency}</div>
               </div>
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>START DATE</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDate(group.start_date)}</div>
-                <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>First cycle begins</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.65rem', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase' }}>START DATE</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>{formatDate(group.start_date)}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.15rem' }}>First cycle begins</div>
               </div>
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>EXPECTED PAYOUT</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(group.contribution_amount * group.max_members * 0.975)}</div>
-                <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Approx. after fees</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.65rem', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase' }}>EXPECTED PAYOUT</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>{formatCurrency(group.contribution_amount * group.max_members * 0.975)}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.15rem' }}>Approx. after fees</div>
               </div>
             </div>
           </Card>
