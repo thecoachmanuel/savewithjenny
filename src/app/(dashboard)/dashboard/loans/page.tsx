@@ -10,7 +10,8 @@ import {
   CheckCircle2, 
   AlertCircle,
   TrendingUp,
-  History
+  History,
+  XCircle
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 import { formatDate } from '@/lib/utils/formatDate';
