@@ -57,7 +57,7 @@ export function Sidebar({ userRole, brandConfig }: { userRole?: string, brandCon
     <aside className="glass" style={{ 
       width: '280px', 
       height: '100vh', 
-      position: 'fixed', 
+      position: 'relative', 
       left: 0, 
       top: 0, 
       display: 'flex', 

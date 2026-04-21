@@ -10,6 +10,7 @@ import {
   Lock,
   LayoutDashboard
 } from 'lucide-react';
+import { MobileNav } from '@/components/layout/MobileNav';
 
 export default async function LandingPage() {
   const supabase = await createClient();
@@ -31,7 +32,7 @@ export default async function LandingPage() {
     .eq('key', 'brand_config')
     .single();
 
-  const brandConfig = (brandSettings?.value as any) || { site_name: 'Sugar Thrift', logo_url: '' };
+  const brandConfig = (brandSettings?.value as any) || { site_name: 'Save with Jenny', logo_url: '' };
   const siteName = brandConfig.site_name;
   const logoUrl = brandConfig.logo_url;
 
@@ -71,7 +72,15 @@ export default async function LandingPage() {
           <span style={{ fontWeight: 700, fontSize: '1.25rem' }}>{renderBrandName(siteName)}</span>
         </Link>
         
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+        {/* Desktop Navigation */}
+        <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <style jsx>{`
+            @media (max-width: 768px) {
+              .desktop-nav {
+                display: none !important;
+              }
+            }
+          `}</style>
           <Link href="#features" className="btn-ghost" style={{ fontSize: '0.875rem' }}>Features</Link>
           <Link href="#how-it-works" className="btn-ghost" style={{ fontSize: '0.875rem' }}>How it Works</Link>
           
@@ -87,14 +96,31 @@ export default async function LandingPage() {
             </>
           )}
         </div>
+
+        {/* Mobile Navigation Toggle */}
+        <MobileNav 
+          user={user} 
+          role={role} 
+          dashboardUrl={dashboardUrl} 
+          siteName={siteName} 
+          logoUrl={logoUrl}
+          renderBrandName={renderBrandName}
+        />
       </nav>
 
       {/* Hero Section */}
-      <section style={{ 
+      <section className="hero-section" style={{ 
         padding: '10rem 2rem 6rem', 
         textAlign: 'center',
         background: 'radial-gradient(circle at top center, rgba(16, 185, 129, 0.08) 0%, transparent 70%)'
       }}>
+        <style jsx>{`
+          @media (max-width: 768px) {
+            .hero-section {
+              padding: 6rem 1rem 4rem !important;
+            }
+          }
+        `}</style>
         <div className="container animate-fade-in">
           <div className="badge badge-success" style={{ marginBottom: '1.5rem' }}>
             <Zap size={14} style={{ marginRight: '0.5rem' }} />
@@ -234,7 +260,7 @@ export default async function LandingPage() {
               ) : null}
               <span style={{ fontWeight: 700, fontSize: '1.25rem' }}>{renderBrandName(siteName)}</span>
             </Link>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>© 2024 {siteName}. All rights reserved.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>© 2026 {siteName}. All rights reserved.</p>
           </div>
           
           <div style={{ display: 'flex', gap: '3rem' }}>
