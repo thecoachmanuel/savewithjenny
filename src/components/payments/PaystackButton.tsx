@@ -27,6 +27,9 @@ export function PaystackContributionButton({
   onSuccess,
   onClose
 }: PaystackContributionButtonProps) {
+  const [isVerifying, setIsVerifying] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const router = useRouter();
   const isMounted = React.useRef(true);
 
   React.useEffect(() => {
