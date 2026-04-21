@@ -10,7 +10,8 @@ import {
   ArrowUpRight, 
   ArrowDownRight,
   Plus,
-  Landmark
+  Landmark,
+  CreditCard
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 import Link from 'next/link';
