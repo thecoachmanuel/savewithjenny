@@ -62,16 +62,18 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
       .select('*, profiles:payout_recipient(full_name)')
       .eq('group_id', group.id)
       .eq('status', 'active')
+      .order('cycle_number', { ascending: false }) // Take the latest active one if multiple exist
+      .limit(1)
       .maybeSingle();
 
     if (!currentCycle) {
-      const { data: firstCycle } = await supabase
+      const { data: fallbackCycle } = await supabase
         .from('group_cycles')
         .select('*, profiles:payout_recipient(full_name)')
         .eq('group_id', group.id)
         .eq('cycle_number', (group as any).current_cycle_number || 1)
         .maybeSingle();
-      currentCycle = firstCycle;
+      currentCycle = fallbackCycle;
     }
 
   return (
@@ -130,20 +132,22 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
               </div>
               <h2 style={{ margin: '0.25rem 0', fontSize: '1.5rem' }}>
                 {group.status === 'active' ? (
-                  currentCycle ? `Currently in Round ${currentCycle.cycle_number}` : 'Rotation Ready to Start'
+                  currentCycle ? `In Round ${currentCycle.cycle_number} of ${members?.length || '?'}` : 'Rotation Ready to Start'
                 ) : group.status === 'completed' ? 'Rotation Finished Successfully' : 'Group in Standby'}
               </h2>
               <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
                 {group.status === 'active' 
                   ? `Next Payout: ${currentCycle?.profiles?.full_name || 'N/A'} for ${formatCurrency(currentCycle?.payout_amount || 0)}`
-                  : 'Wait for more members to join or manually initialize the rotation.'}
+                  : group.status === 'pending' ? 'Click Start to begin the first round of contributions.' : 'This rotation has ended.'}
               </p>
             </div>
           </div>
           
           <div style={{ minWidth: '200px' }}>
             {group.status === 'active' && currentCycle && (
-              currentCycle.cycle_number >= (members?.length || 0) ? (
+              // Only show "Finish" if we are IN the final cycle and it is already ACTIVE
+              // This avoids the 'skip Round 1' confusion
+              currentCycle.cycle_number >= (members?.length || 0) && currentCycle.cycle_number > 1 ? (
                 <CompleteRotationForm groupId={group.id} />
               ) : (
                 <PushNextCycleForm 
@@ -154,12 +158,12 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
                 />
               )
             )}
-            {group.status === 'pending' && members && members.length >= 2 && (
+            {group.status === 'pending' && (
                <PushNextCycleForm 
                   groupId={group.id} 
                   groupSlug={group.slug} 
                   currentCycle={0} 
-                  totalMembers={members.length} 
+                  totalMembers={members?.length || 0} 
                />
             )}
           </div>

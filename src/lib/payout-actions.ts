@@ -143,6 +143,27 @@ export async function pushNextCycle(groupId: string, allowUnpaid: boolean = fals
   if (groupError || !group) return { error: 'Group not found' }
   if (group.status === 'completed') return { error: 'Rotation already completed.' }
 
+  // 1b. SPECIAL CASE: Starting the rotation for the first time
+  if (group.status === 'pending') {
+    const { error: activeError } = await supabase
+      .from('groups')
+      .update({ status: 'active', updated_at: new Date().toISOString() })
+      .eq('id', groupId);
+
+    if (activeError) return { error: 'Failed to activate group: ' + activeError.message };
+
+    // Ensure Round 1 is active
+    await supabase
+      .from('group_cycles')
+      .update({ status: 'active' })
+      .eq('group_id', groupId)
+      .eq('cycle_number', 1);
+
+    revalidatePath(`/admin/groups/${group.slug}`)
+    revalidatePath(`/dashboard/groups/${group.slug}`)
+    return { success: true };
+  }
+
   // 2. Fetch Current Cycle Record
   const currentCycleNumber = group.current_cycle_number || 1
   const { data: currentCycle, error: currentCycleError } = await supabase

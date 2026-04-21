@@ -51,14 +51,20 @@ export async function ContributionProgress({ groupId, cycleId, cycleNumber, cont
       if (primaryResults.length > 0) {
         contributions = primaryResults;
       } else {
-        // Attempt 2: Fallback to payment_records if contributions table is empty/missing round data
+        // Attempt 2: Fallback to payment_records ONLY IF cycle_id linking is broken
+        // but restrict to very recent records to avoid cross-round leakage
         const { data: records } = await supabase
           .from('payment_records')
-          .select('user_id, status, amount')
+          .select('user_id, status, amount, created_at')
           .eq('group_id', groupId)
-          .eq('status', 'success');
+          .eq('status', 'success')
+          .order('created_at', { descending: true });
         
-        contributions = (records || []).map(r => ({ ...r, status: 'paid' }));
+        // Safety: If we're in a specific cycle, we shouldn't just grab every history record.
+        // For now, we'll only use these if the contributions table is truly empty for this group.
+        if (!contribData || contribData.length === 0) {
+           contributions = (records || []).slice(0, members.length).map(r => ({ ...r, status: 'paid' }));
+        }
       }
     } catch (e: any) {
       console.warn('[CONTRIBUTION PROGRESS] Fallback: Direct query failed, checking payment_records', e.message);

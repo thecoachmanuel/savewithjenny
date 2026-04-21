@@ -51,22 +51,23 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
     .order('scheduled_date', { ascending: true });
 
   // 4. Fetch Active Cycle for Progress Tracking
-  // We use status='active' as the source of truth
   let { data: activeCycle } = await supabase
     .from('group_cycles')
     .select('*')
     .eq('group_id', group.id)
     .eq('status', 'active')
+    .order('cycle_number', { ascending: false })
+    .limit(1)
     .maybeSingle();
 
   if (!activeCycle) {
-    const { data: firstCycle } = await supabase
+    const { data: fallbackCycle } = await supabase
       .from('group_cycles')
       .select('*')
       .eq('group_id', group.id)
       .eq('cycle_number', (group as any).current_cycle_number || 1)
       .maybeSingle();
-    activeCycle = firstCycle;
+    activeCycle = fallbackCycle;
   }
 
   // 5. Fetch User Profile for Balance
