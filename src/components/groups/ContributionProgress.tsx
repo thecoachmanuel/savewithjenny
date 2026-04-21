@@ -58,7 +58,7 @@ export async function ContributionProgress({ groupId, cycleId, cycleNumber, cont
           .select('user_id, status, amount, created_at')
           .eq('group_id', groupId)
           .eq('status', 'success')
-          .order('created_at', { descending: true });
+          .order('created_at', { ascending: false });
         
         // Safety: If we're in a specific cycle, we shouldn't just grab every history record.
         // For now, we'll only use these if the contributions table is truly empty for this group.
