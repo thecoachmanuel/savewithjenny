@@ -336,7 +336,7 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
             <Link href="/admin/groups">
               <Button variant="secondary">Back to Groups</Button>
             </Link>
-            <Link href={`/admin/groups/${group?.slug || slug}`}>
+            <Link href={`/admin/groups/${slug}`}>
               <Button>Retry Connection</Button>
             </Link>
           </div>
