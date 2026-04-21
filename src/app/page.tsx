@@ -12,6 +12,16 @@ import {
 } from 'lucide-react';
 import { MobileNav } from '@/components/layout/MobileNav';
 
+const renderBrandName = (name: string) => {
+  const parts = name.split(' ');
+  if (parts.length <= 1) return name;
+  const lastPart = parts.pop();
+  const firstPart = parts.join(' ');
+  return (
+    <>{firstPart} <span className="text-gradient">{lastPart}</span></>
+  );
+};
+
 export default async function LandingPage() {
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
@@ -37,15 +47,6 @@ export default async function LandingPage() {
   const siteName = brandConfig.site_name;
   const logoUrl = brandConfig.logo_url;
 
-  const renderBrandName = (name: string) => {
-    const parts = name.split(' ');
-    if (parts.length <= 1) return name;
-    const lastPart = parts.pop();
-    const firstPart = parts.join(' ');
-    return (
-      <>{firstPart} <span className="text-gradient">{lastPart}</span></>
-    );
-  };
 
   const dashboardUrl = (role === 'owner' || role === 'admin') ? '/admin' : '/dashboard';
 
