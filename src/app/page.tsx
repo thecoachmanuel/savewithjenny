@@ -14,7 +14,8 @@ import { MobileNav } from '@/components/layout/MobileNav';
 
 export default async function LandingPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: authData } = await supabase.auth.getUser();
+  const user = authData?.user;
   let role = 'member';
 
   if (user) {

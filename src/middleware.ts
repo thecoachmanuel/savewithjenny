@@ -37,9 +37,8 @@ export async function middleware(request: NextRequest) {
   // getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser()
+  const user = data?.user
 
   const { pathname } = request.nextUrl
 
