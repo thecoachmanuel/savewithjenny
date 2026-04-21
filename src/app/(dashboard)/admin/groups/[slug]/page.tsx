@@ -301,7 +301,7 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
 
                 <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>System Sync</div>
-                  <form action={generateRotationSchedule.bind(null, group.id)}>
+                  <form action={generateRotationSchedule.bind(null, group.id) as any}>
                     <Button 
                       type="submit" 
                       variant="secondary" 
