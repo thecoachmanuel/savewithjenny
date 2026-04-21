@@ -57,7 +57,7 @@ export function PaystackContributionButton({
     try {
       const result = await verifyAndProcessPayment(reference.reference);
       if (isMounted.current) {
-        if (result.success) {
+        if ((result as any).success) {
           setIsSuccess(true);
           router.refresh();
         } else {
