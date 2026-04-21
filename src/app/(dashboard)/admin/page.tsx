@@ -14,6 +14,7 @@ import {
   CreditCard
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
+import { formatDate } from '@/lib/utils/formatDate';
 import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
 
