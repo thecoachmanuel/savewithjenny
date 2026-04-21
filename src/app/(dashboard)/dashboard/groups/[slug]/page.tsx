@@ -197,6 +197,39 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
             </Card>
           </div>
 
+          {/* NEW: Action-First Mobile Layout - Move critical actions higher */}
+          {isMember && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div className="desktop-only" style={{ display: 'none' }}>{/* Placeholder for desktop logic if needed */}</div>
+              <Card title="Manage Savings" className="glass shadow-lg" style={{ border: '1px solid var(--accent-primary)', background: 'rgba(59, 130, 246, 0.05)' }}>
+                <MemberActionCenter 
+                  user={{ id: user.id, email: user.email! }}
+                  group={{ id: group.id, contribution_amount: group.contribution_amount }}
+                  activeCycle={activeCycle}
+                />
+              </Card>
+              
+              <div className="stats-grid">
+                <Card title="Your Position" className="glass shadow-sm">
+                  <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--accent-primary)' }}>#{membership.position}</div>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                      Rotation Turn
+                    </p>
+                  </div>
+                </Card>
+                <Card title="Trust Score" className="glass shadow-sm">
+                   <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
+                     <div style={{ fontSize: '2.5rem', fontWeight: 800 }}>{profile?.trust_score || 350}</div>
+                     <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                       Platform Reliability
+                     </p>
+                   </div>
+                </Card>
+              </div>
+            </div>
+          )}
+
           {/* New Contribution Progress Tracker */}
           {activeCycle && (
             <ContributionProgress 
@@ -309,27 +342,6 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
                   Confirm & Join Group
                 </Button>
               </form>
-            </Card>
-          )}
-
-          {isMember && (
-            <Card title="Manage Savings" className="glass">
-              <MemberActionCenter 
-                user={{ id: user.id, email: user.email! }}
-                group={{ id: group.id, contribution_amount: group.contribution_amount }}
-                activeCycle={activeCycle}
-              />
-            </Card>
-          )}
-
-          {isMember && (
-            <Card title="Your Position" className="glass">
-              <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-                <div style={{ fontSize: '3rem', fontWeight: 800, color: 'var(--accent-primary)' }}>#{membership.position}</div>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-                  Your turn in the rotation schedule.
-                </p>
-              </div>
             </Card>
           )}
         </div>

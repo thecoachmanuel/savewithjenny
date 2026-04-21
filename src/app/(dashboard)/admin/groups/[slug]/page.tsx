@@ -90,27 +90,27 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
           <ChevronLeft size={16} /> Back to Groups
         </Link>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="header-flex">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-              <h1 style={{ fontSize: '2.5rem', margin: 0 }}>{group.name}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.5rem' }}>
+              <h1 style={{ margin: 0 }}>{group.name}</h1>
               <div className={
                 group.status === 'active' ? 'badge badge-success' : 
                 group.status === 'completed' ? 'badge badge-neutral' : 
                 'badge badge-warning'
-              }>
+              } style={{ fontSize: '0.65rem' }}>
                 {group.status}
               </div>
             </div>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', margin: 0 }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', margin: 0 }}>
               Management System Overview • Created by {group.profiles?.full_name}
             </p>
           </div>
           
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <InviteLinkButton slug={group.slug} />
             <Link href={`/admin/groups/${group.slug}/edit`}>
-              <Button leftIcon={<Settings size={18} />} variant="secondary">Configure</Button>
+              <Button leftIcon={<Settings size={16} />} variant="secondary" size="md">Configure</Button>
             </Link>
           </div>
         </div>
@@ -118,24 +118,25 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
 
       {/* NEW: Action Center Hero Banner */}
       <Card className="glass" style={{ marginBottom: '2.5rem', border: '1px solid var(--accent-primary)', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '2rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
             <div style={{ 
-              width: '48px', height: '48px', borderRadius: '1rem', background: 'rgba(16, 185, 129, 0.1)', 
-              display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)'
+              width: '40px', height: '40px', borderRadius: '0.75rem', background: 'rgba(16, 185, 129, 0.1)', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)',
+              flexShrink: 0
             }}>
-              <Calendar size={24} />
+              <Calendar size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              <div style={{ fontSize: '0.6rem', fontWeight: 800, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 Admin Action Center
               </div>
-              <h2 style={{ margin: '0.25rem 0', fontSize: '1.5rem' }}>
+              <h2 style={{ margin: '0.15rem 0' }}>
                 {group.status === 'active' ? (
                   currentCycle ? `In Round ${currentCycle.cycle_number} of ${members?.length || '?'}` : 'Rotation Ready to Start'
                 ) : group.status === 'completed' ? 'Rotation Finished Successfully' : 'Group in Standby'}
               </h2>
-              <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+              <p style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
                 {group.status === 'active' 
                   ? `Next Payout: ${currentCycle?.profiles?.full_name || 'N/A'} for ${formatCurrency(currentCycle?.payout_amount || 0)}`
                   : group.status === 'pending' ? 'Click Start to begin the first round of contributions.' : 'This rotation has ended.'}
@@ -143,10 +144,8 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
             </div>
           </div>
           
-          <div style={{ minWidth: '200px' }}>
+          <div style={{ minWidth: '200px', flex: 1 }}>
             {group.status === 'active' && currentCycle && (
-              // Only show "Finish" if we are IN the final cycle and it is already ACTIVE
-              // This avoids the 'skip Round 1' confusion
               currentCycle.cycle_number >= (members?.length || 0) && currentCycle.cycle_number > 1 ? (
                 <CompleteRotationForm groupId={group.id} />
               ) : (
@@ -170,21 +169,21 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
         </div>
       </Card>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Group Overview Stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-              <Card className="glass" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem', fontWeight: 700 }}>LIQUIDITY POOL</div>
-                <div style={{ fontSize: '1.75rem', fontWeight: 900 }}>{formatCurrency(group.total_pool || 0)}</div>
+            <div className="stats-grid">
+              <Card className="glass shadow-sm" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', marginBottom: '0.4rem', fontWeight: 700, textTransform: 'uppercase' }}>LIQUIDITY POOL</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(group.total_pool || 0)}</div>
               </Card>
-              <Card className="glass">
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>MEMBER CONTRIBUTION</div>
-                <div style={{ fontSize: '1.75rem', fontWeight: 900 }}>{formatCurrency(group.contribution_amount)}</div>
+              <Card className="glass shadow-sm">
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', marginBottom: '0.4rem', fontWeight: 700, textTransform: 'uppercase' }}>MEMBER CONTRIBUTION</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(group.contribution_amount)}</div>
               </Card>
-              <Card className="glass" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>ACTIVE STATUS</div>
-                <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+              <Card className="glass shadow-sm" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', marginBottom: '0.4rem', fontWeight: 700, textTransform: 'uppercase' }}>ACTIVE STATUS</div>
+                <div style={{ fontSize: '1.125rem', fontWeight: 800 }}>
                   {group.status === 'completed' ? 'COMPLETE' : 
                    currentCycle ? `ROUND ${currentCycle.cycle_number}` : 'STANDBY'}
                 </div>
