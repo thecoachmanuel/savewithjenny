@@ -57,8 +57,10 @@ export function MobileNav({ user, role, dashboardUrl, siteName, logoUrl }: Mobil
           display: 'flex',
           flexDirection: 'column',
           gap: '1.5rem',
+          background: 'rgba(10, 15, 26, 0.98)',
+          backdropFilter: 'blur(20px)',
           border: '1px solid var(--glass-border)',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
           borderRadius: '1.5rem'
         }}>
           <Link href="/" onClick={toggleMenu} style={{ fontSize: '1.125rem', fontWeight: 600 }}>Home</Link>
