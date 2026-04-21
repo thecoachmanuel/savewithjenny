@@ -113,7 +113,7 @@ export function PushNextCycleForm({ groupId, groupSlug, currentCycle, totalMembe
         <div style={{ color: '#ef4444', fontSize: '0.875rem', textAlign: 'center', padding: '0.5rem' }}>
           {errorStatus.message}
           <Button 
-            variant="link" 
+            variant="ghost" 
             size="sm" 
             onClick={() => setErrorStatus(null)}
             style={{ marginLeft: '0.5rem' }}
