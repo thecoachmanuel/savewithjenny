@@ -228,3 +228,13 @@ h1, h2, h3, h4, h5, h6 {
 .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--accent-primary); border: 1px solid rgba(16, 185, 129, 0.2); }
 .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.2); }
 .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+/* Responsive Utility Overrides */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .hero-section {
+    padding: 6rem 1rem 4rem !important;
+  }
+}
