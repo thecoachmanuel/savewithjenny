@@ -111,7 +111,7 @@ export default async function AdminLoansPage() {
                 {/* Actions */}
                 <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                   <Button variant="ghost" style={{ color: 'var(--danger)' }}><XCircle size={18} /></Button>
-                  <form action={approveLoan.bind(null, loan.id)}>
+                  <form action={approveLoan.bind(null, loan.id) as any}>
                     <Button type="submit" size="sm" leftIcon={<CheckCircle2 size={16} />}>Approve</Button>
                   </form>
                 </div>

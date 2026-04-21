@@ -174,11 +174,11 @@ export default async function AdminKYCPage() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
                 {!usr.kyc_verified ? (
-                  <form action={verifyUserKYC.bind(null, usr.id, true)}>
+                  <form action={verifyUserKYC.bind(null, usr.id, true) as any}>
                     <Button size="sm" style={{ padding: '0.5rem 1rem' }}>Verify</Button>
                   </form>
                 ) : (
-                  <form action={verifyUserKYC.bind(null, usr.id, false)}>
+                  <form action={verifyUserKYC.bind(null, usr.id, false) as any}>
                     <Button size="sm" variant="secondary" style={{ padding: '0.5rem 1rem', color: 'var(--danger)' }}>Revoke</Button>
                   </form>
                 )}

@@ -28,7 +28,7 @@ export default function CreateGroupPage() {
         <p style={{ color: 'var(--text-secondary)' }}>Configure the rules and schedule for your new thrift circle.</p>
       </header>
 
-      <form action={createGroup} onSubmit={() => setIsLoading(true)}>
+      <form action={createGroup as any} onSubmit={() => setIsLoading(true)}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Basic Info */}
           <Card title="Basic Information" subtitle="General details about the group." className="glass">

@@ -93,7 +93,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
           </div>
           
           {!isMember ? (
-            <form action={joinGroup.bind(null, group.id)}>
+            <form action={joinGroup.bind(null, group.id) as any}>
               <Button size="lg" className="pulse-success">Join this Circle</Button>
             </form>
           ) : (
@@ -289,7 +289,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
               <p style={{ fontSize: '0.875rem', marginBottom: '1.5rem', opacity: 0.8 }}>
                 Join now to secure your position in the upcoming rotation cycle.
               </p>
-              <form action={joinGroup.bind(null, group.id)}>
+              <form action={joinGroup.bind(null, group.id) as any}>
                 <Button variant="secondary" style={{ width: '100%', background: '#000', color: '#fff', border: 'none' }}>
                   Confirm & Join Group
                 </Button>
