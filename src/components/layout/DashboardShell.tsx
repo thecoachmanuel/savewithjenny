@@ -17,6 +17,35 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', position: 'relative' }}>
+      <style jsx>{`
+        .sidebar-wrapper {
+          transform: translateX(0);
+        }
+        @media (max-width: 1024px) {
+          .sidebar-wrapper {
+            transform: translateX(-100%);
+          }
+          .sidebar-wrapper.open {
+            transform: translateX(0);
+          }
+          .main-content {
+            margin-left: 0 !important;
+          }
+          #sidebar-toggle {
+            display: flex !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .search-container,
+          .user-info {
+            display: none !important;
+          }
+          .content-area {
+            padding: 1rem !important;
+          }
+        }
+      `}</style>
+
       {/* Sidebar with Overlay for Mobile */}
       <div 
         className={`sidebar-wrapper ${isSidebarOpen ? 'open' : ''}`}
@@ -27,20 +56,6 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
         }}
       >
         <Sidebar userRole={profile?.role} brandConfig={brandConfig} />
-        
-        <style jsx>{`
-          .sidebar-wrapper {
-            transform: translateX(0);
-          }
-          @media (max-width: 1024px) {
-            .sidebar-wrapper {
-              transform: translateX(-100%);
-            }
-            .sidebar-wrapper.open {
-              transform: translateX(0);
-            }
-          }
-        `}</style>
       </div>
 
       {/* Overlay Background */}
@@ -65,13 +80,6 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
         position: 'relative',
         transition: 'margin-left 0.3s ease'
       }} className="main-content">
-        <style jsx>{`
-          @media (max-width: 1024px) {
-            .main-content {
-              marginLeft: 0 !important;
-            }
-          }
-        `}</style>
         
         {/* Topbar */}
         <header className="glass" style={{
@@ -103,13 +111,6 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
               id="sidebar-toggle"
             >
               <Menu size={24} />
-              <style jsx>{`
-                @media (max-width: 1024px) {
-                  #sidebar-toggle {
-                    display: flex !important;
-                  }
-                }
-              `}</style>
             </button>
 
             <div className="search-container" style={{ 
@@ -121,13 +122,6 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
               borderRadius: '0.5rem',
               width: '300px'
             }}>
-              <style jsx>{`
-                @media (max-width: 640px) {
-                  .search-container {
-                    display: none !important;
-                  }
-                }
-              `}</style>
               <Search size={18} color="var(--text-muted)" />
               <input 
                 type="text" 
@@ -160,13 +154,6 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingLeft: '1.5rem', borderLeft: '1px solid var(--glass-border)' }}>
               <div className="user-info" style={{ textAlign: 'right' }}>
-                <style jsx>{`
-                  @media (max-width: 640px) {
-                    .user-info {
-                      display: none !important;
-                    }
-                  }
-                `}</style>
                 <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{profile?.full_name}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{profile?.role}</div>
               </div>
@@ -193,13 +180,6 @@ export function DashboardShell({ children, profile, brandConfig }: DashboardShel
 
         {/* Content Area */}
         <div style={{ padding: '2rem' }} className="content-area">
-          <style jsx>{`
-            @media (max-width: 640px) {
-              .content-area {
-                padding: 1rem !important;
-              }
-            }
-          `}</style>
           {children}
         </div>
       </main>
