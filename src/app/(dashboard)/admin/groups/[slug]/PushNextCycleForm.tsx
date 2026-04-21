@@ -100,7 +100,7 @@ export function PushNextCycleForm({ groupId, groupSlug, currentCycle, totalMembe
             </Button>
             <Button 
                size="sm"
-               variant="outline" 
+               variant="ghost" 
                style={{ flex: 1, fontSize: '0.75rem' }}
                onClick={() => setErrorStatus(null)}
                disabled={isPending}
