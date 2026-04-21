@@ -69,6 +69,20 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
     activeCycle = firstCycle;
   }
 
+  // 5. Fetch User Profile for Balance
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  // 6. Fetch Member Contributions for Payout Stats
+  const { data: memberContribs } = await supabase
+    .from('contributions')
+    .select('*')
+    .eq('group_id', group.id)
+    .eq('user_id', user.id);
+
   return (
     <div className="group-detail-page">
       <header style={{ marginBottom: '2.5rem' }}>
