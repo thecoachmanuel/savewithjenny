@@ -63,15 +63,17 @@ export default async function MemberDashboardPage() {
 
   return (
     <div className="member-dashboard">
-      <header style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Hello, <span className="text-gradient">{profile?.full_name?.split(' ')[0]}</span></h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Welcome back to your thrift Command Center.</p>
+      <header style={{ marginBottom: '2.5rem' }} className="header-flex">
+        <div>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Hello, <span className="text-gradient">{profile?.full_name?.split(' ')[0]}</span></h1>
+          <p style={{ color: 'var(--text-secondary)' }}>Welcome back to your thrift Command Center.</p>
+        </div>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Main Highlights */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+          <div className="stats-grid">
             <Card className="glass" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%)', padding: '1.5rem' }}>
                <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem', fontWeight: 600 }}>WALLET BALANCE</div>
                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--accent-primary)' }}>{formatCurrency(Number(profile?.wallet_balance) || 0)}</div>

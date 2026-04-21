@@ -40,18 +40,15 @@ export default async function MemberGroupsPage() {
 
   return (
     <div className="member-groups-page">
-      <header style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Thrift <span className="text-gradient">Groups</span></h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Explore available thrift circles or manage your active savings.</p>
+      <header style={{ marginBottom: '2.5rem' }} className="header-flex">
+        <div>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Thrift <span className="text-gradient">Groups</span></h1>
+          <p style={{ color: 'var(--text-secondary)' }}>Explore available thrift circles or manage your active savings.</p>
+        </div>
       </header>
 
       {/* Hero Stats */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-        gap: '1.5rem',
-        marginBottom: '3rem'
-      }}>
+      <div className="stats-grid" style={{ marginBottom: '3rem' }}>
         <Card className="glass" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
@@ -84,11 +81,7 @@ export default async function MemberGroupsPage() {
             <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)' }}></div>
           </div>
           
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-            gap: '1.5rem' 
-          }}>
+          <div className="stats-grid">
             {myGroups.map((group) => (
               <GroupCard key={group.id} group={group} isJoined />
             ))}
@@ -106,11 +99,7 @@ export default async function MemberGroupsPage() {
           </div>
         </div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-          gap: '1.5rem' 
-        }}>
+        <div className="stats-grid">
           {availableGroups?.map((group) => (
             <GroupCard key={group.id} group={group} />
           ))}

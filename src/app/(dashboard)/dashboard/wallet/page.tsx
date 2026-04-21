@@ -37,12 +37,7 @@ export default async function WalletPage() {
       </header>
 
       {/* Wallet Stats */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-        gap: '1.5rem',
-        marginBottom: '3rem'
-      }}>
+      <div className="stats-grid" style={{ marginBottom: '3rem' }}>
         <Card className="glass" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
             <div style={{ 
@@ -72,7 +67,8 @@ export default async function WalletPage() {
 
       {/* Transaction History */}
       <Card title="Transaction Ledger" className="glass">
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="table-wrapper">
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: '600px' }}>
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: '1fr 2fr 1fr 1fr', 
@@ -134,6 +130,7 @@ export default async function WalletPage() {
               <p>No transactions recorded yet.</p>
             </div>
           )}
+          </div>
         </div>
       </Card>
     </div>

@@ -56,7 +56,7 @@ export default async function LoansPage() {
 
   return (
     <div className="loans-page">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <header style={{ marginBottom: '2.5rem' }} className="header-flex">
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Loan <span className="text-gradient">Center</span></h1>
           <p style={{ color: 'var(--text-secondary)' }}>Access credit based on your thrift contribution history.</p>
@@ -89,7 +89,7 @@ export default async function LoansPage() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
         {/* Status Card */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <Card title="My Standing" className="glass">

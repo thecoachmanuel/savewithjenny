@@ -97,7 +97,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
           <ChevronLeft size={16} /> Back to Browse
         </Link>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="header-flex">
           <div>
             <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{group.name}</h1>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -119,7 +119,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
         </div>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Main Info Card */}
           <Card className="glass" style={{ padding: '2.5rem' }}>
@@ -128,7 +128,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
               {group.description || 'This group is dedicated to rotating savings and collective growth among its members.'}
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
+            <div className="stats-grid">
               <div>
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>CONTRIBUTION</div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(group.contribution_amount)}</div>
@@ -148,7 +148,7 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
           </Card>
 
           {/* Membership Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+          <div className="stats-grid">
             <Card className="glass">
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div style={{ 
@@ -177,23 +177,23 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
                 </div>
               </div>
             </Card>
-            {/* Key Stats Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', marginBottom: '2rem' }}>
-              <Card className="glass" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>YOUR BALANCE</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(profile?.wallet_balance || 0)}</div>
-              </Card>
-              <Card className="glass">
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>PAID TO DATE</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(memberContribs?.reduce((sum, c) => sum + (c.amount || 0), 0) || 0)}</div>
-              </Card>
-              <Card className="glass" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>ACTIVE ROUND</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>
-                   {activeCycle?.cycle_number || (group as any).current_cycle_number || 1}
-                </div>
-              </Card>
-            </div>
+          </div>
+
+          <div className="stats-grid">
+            <Card className="glass" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>YOUR BALANCE</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(profile?.wallet_balance || 0)}</div>
+            </Card>
+            <Card className="glass">
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>PAID TO DATE</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{formatCurrency(memberContribs?.reduce((sum, c) => sum + (c.amount || 0), 0) || 0)}</div>
+            </Card>
+            <Card className="glass" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>ACTIVE ROUND</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>
+                 {activeCycle?.cycle_number || (group as any).current_cycle_number || 1}
+              </div>
+            </Card>
           </div>
 
           {/* New Contribution Progress Tracker */}
