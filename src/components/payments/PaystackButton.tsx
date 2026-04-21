@@ -40,7 +40,10 @@ export function PaystackContributionButton({
     email: email,
     amount: Math.round(amount * 100),
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
-    metadata: metadata,
+    metadata: {
+      ...metadata,
+      custom_fields: []
+    } as any,
   }), [email, amount, metadata]);
 
   const initializePayment = usePaystackPayment(config);
