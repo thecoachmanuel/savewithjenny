@@ -11,11 +11,20 @@ interface MobileNavProps {
   dashboardUrl: string;
   siteName: string;
   logoUrl?: string;
-  renderBrandName: (name: string) => React.ReactNode;
 }
 
-export function MobileNav({ user, role, dashboardUrl, siteName, logoUrl, renderBrandName }: MobileNavProps) {
+export function MobileNav({ user, role, dashboardUrl, siteName, logoUrl }: MobileNavProps) {
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const renderBrandName = (name: string) => {
+    const parts = name.split(' ');
+    if (parts.length <= 1) return name;
+    const lastPart = parts.pop();
+    const firstPart = parts.join(' ');
+    return (
+      <>{firstPart} <span className="text-gradient">{lastPart}</span></>
+    );
+  };
 
   const toggleMenu = () => setIsOpen(!isOpen);
 

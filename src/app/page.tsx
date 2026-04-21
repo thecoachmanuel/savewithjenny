@@ -47,7 +47,6 @@ export default async function LandingPage() {
     );
   };
 
-
   const dashboardUrl = (role === 'owner' || role === 'admin') ? '/admin' : '/dashboard';
 
   return (
@@ -98,7 +97,6 @@ export default async function LandingPage() {
           dashboardUrl={dashboardUrl} 
           siteName={siteName} 
           logoUrl={logoUrl}
-          renderBrandName={renderBrandName}
         />
       </nav>
 
