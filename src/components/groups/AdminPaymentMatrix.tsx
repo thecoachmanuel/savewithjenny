@@ -116,8 +116,8 @@ export async function AdminPaymentMatrix({ groupId, contributionAmount }: AdminP
         </div>
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+      <div className="table-wrapper">
+        <table style={{ minWidth: '800px', width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
           <thead>
             <tr style={{ background: 'rgba(255, 255, 255, 0.02)' }}>
               <th style={{ padding: '1.25rem 1rem', textAlign: 'left', minWidth: '200px', borderBottom: '1px solid var(--glass-border)', position: 'sticky', left: 0, background: 'var(--bg-primary)', zIndex: 10 }}>Member</th>

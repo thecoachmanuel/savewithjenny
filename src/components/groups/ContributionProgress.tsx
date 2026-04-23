@@ -189,6 +189,8 @@ export async function ContributionProgress({ groupId, cycleId, cycleNumber, cont
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
               padding: '0.75rem',
               background: hasPaid ? 'rgba(16, 185, 129, 0.05)' : 'rgba(255, 255, 255, 0.02)',
               borderRadius: '0.75rem',

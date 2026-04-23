@@ -215,6 +215,8 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '1rem',
                     padding: '1rem',
                     background: 'rgba(255, 255, 255, 0.02)',
                     borderRadius: '0.75rem',
