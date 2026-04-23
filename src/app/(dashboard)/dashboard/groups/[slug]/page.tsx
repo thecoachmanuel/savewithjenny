@@ -280,13 +280,13 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
                     </div>
 
                     <div style={{ flex: 1, padding: '1rem', background: item.recipient_id === user?.id ? 'rgba(16, 185, 129, 0.05)' : 'rgba(255, 255, 255, 0.02)', borderRadius: '0.75rem', border: '1px solid var(--glass-border)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <div style={{ fontWeight: 600 }}>
                           {item.profiles?.full_name} {item.recipient_id === user?.id && <span className="badge badge-success" style={{ marginLeft: '0.5rem' }}>YOU</span>}
                         </div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{formatDate(item.scheduled_date)}</div>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                         <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Payout Amount: {formatCurrency(item.amount)}</div>
                         <div style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', color: item.status === 'completed' ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
                           {item.status}
@@ -314,11 +314,11 @@ export default async function MemberGroupDetailPage({ params }: { params: { slug
           {/* Rules & Transparency */}
           <Card title="Transparency & Fees" className="glass">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Management Fee</span>
                 <span style={{ fontWeight: 600 }}>{group.management_fee_percent}%</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Late Fee</span>
                 <span style={{ fontWeight: 600 }}>{formatCurrency(group.late_fee_amount || 0)}</span>
               </div>

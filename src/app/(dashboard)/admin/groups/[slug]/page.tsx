@@ -275,11 +275,11 @@ export default async function AdminGroupDetailPage({ params }: { params: { slug:
                 {group.rules || 'No specific rules defined for this group.'}
               </p>
               <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--glass-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
                   <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Management Fee</span>
                   <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{group.management_fee_percent}%</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Late Fee</span>
                   <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{formatCurrency(group.late_fee_amount || 0)}</span>
                 </div>
