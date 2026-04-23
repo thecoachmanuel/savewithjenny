@@ -36,7 +36,7 @@ export default async function ProfilePage() {
         <p style={{ color: 'var(--text-secondary)' }}>Manage your personal information and banking details for payouts.</p>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 350px', gap: '2rem', alignItems: 'flex-start' }}>
+      <div className="dashboard-grid" style={{ alignItems: 'flex-start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* KYC Section */}
           <KYCUpload 

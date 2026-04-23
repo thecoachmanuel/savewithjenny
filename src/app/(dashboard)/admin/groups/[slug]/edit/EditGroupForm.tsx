@@ -87,7 +87,7 @@ export function EditGroupForm({ group }: { group: any }) {
 
           {/* Financial Rules */}
           <Card title="Financial Configuration" subtitle="Define the contribution and fee structure." className="glass">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="form-grid">
               <Input 
                 label="Contribution Amount (₦)" 
                 name="contributionAmount" 
@@ -106,7 +106,7 @@ export function EditGroupForm({ group }: { group: any }) {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="form-grid">
               <Input 
                 label="Max Members" 
                 name="maxMembers" 

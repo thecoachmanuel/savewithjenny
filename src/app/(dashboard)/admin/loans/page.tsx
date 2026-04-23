@@ -41,7 +41,7 @@ export default async function AdminLoansPage() {
 
   return (
     <div className="admin-loans-page">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <header className="header-flex" style={{ marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Loan <span className="text-gradient">Requests</span></h1>
           <p style={{ color: 'var(--text-secondary)' }}>Review and approve loan applications from members.</p>
@@ -67,8 +67,8 @@ export default async function AdminLoansPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {pendingLoans.map((loan) => (
-            <Card key={loan.id} className="glass">
-              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1.5fr) 1fr 1fr 1fr', gap: '2rem', alignItems: 'center' }}>
+            <Card key={loan.id} className="glass" style={{ overflowX: 'auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1.5fr) 1fr 1fr 1fr', gap: '2rem', alignItems: 'center', minWidth: '800px' }}>
                 {/* User Info */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ 
@@ -115,6 +115,7 @@ export default async function AdminLoansPage() {
                     <Button type="submit" size="sm" leftIcon={<CheckCircle2 size={16} />}>Approve</Button>
                   </form>
                 </div>
+                </div>
               </div>
             </Card>
           ))}
@@ -136,15 +137,16 @@ export default async function AdminLoansPage() {
         </div>
 
         <Card className="glass" style={{ padding: '0' }}>
-           <div style={{ display: 'flex', flexDirection: 'column' }}>
-             {processedLoans.map((loan) => (
-                <div key={loan.id} style={{ 
-                  padding: '1.25rem 2rem', 
-                  borderBottom: '1px solid var(--glass-border)',
-                  display: 'grid',
-                  gridTemplateColumns: '2fr 1fr 1fr 1fr',
-                  alignItems: 'center'
-                }}>
+           <div className="table-wrapper">
+             <div style={{ display: 'flex', flexDirection: 'column', minWidth: '600px' }}>
+               {processedLoans.map((loan) => (
+                  <div key={loan.id} style={{ 
+                    padding: '1.25rem 2rem', 
+                    borderBottom: '1px solid var(--glass-border)',
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 1fr 1fr 1fr',
+                    alignItems: 'center'
+                  }}>
                   <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                     <div>
                       <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{loan.profiles?.full_name}</div>
@@ -161,6 +163,7 @@ export default async function AdminLoansPage() {
                   </div>
                 </div>
              ))}
+             </div>
            </div>
         </Card>
       </section>

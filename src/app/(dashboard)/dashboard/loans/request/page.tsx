@@ -55,7 +55,7 @@ export default async function RequestLoanPage() {
         <p style={{ color: 'var(--text-secondary)' }}>Apply for a low-interest loan based on your contribution standing.</p>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
         <LoanRequestForm 
           memberships={memberships || []} 
           maxEligibleAmount={maxEligibleAmount} 

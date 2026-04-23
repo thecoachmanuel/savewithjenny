@@ -106,7 +106,7 @@ export default async function AdminGroupsPage() {
                 {group.description || 'No description provided.'}
               </p>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div className="form-grid" style={{ marginBottom: '1.5rem' }}>
                 <div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>CONTRIBUTION</div>
                   <div style={{ fontWeight: 600 }}>₦{group.contribution_amount.toLocaleString()}</div>

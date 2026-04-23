@@ -90,7 +90,7 @@ export default async function AdminDashboardPage() {
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
         {/* Recent Activity / Health */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           <Card title="Quick Actions & Alerts" className="glass">

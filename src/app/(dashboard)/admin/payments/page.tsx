@@ -54,7 +54,7 @@ export default async function AdminPaymentsPage({
 
   return (
     <div className="admin-payments-page">
-      <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <header className="header-flex" style={{ marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Payment <span className="text-gradient">Ledger</span></h1>
           <p style={{ color: 'var(--text-secondary)' }}>Monitor and audit all transactions across the platform.</p>

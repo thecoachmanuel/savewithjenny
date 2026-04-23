@@ -71,7 +71,7 @@ export default async function AdminKYCPage() {
 
   return (
     <div className="admin-kyc-page">
-      <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <header className="header-flex" style={{ marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Identity <span className="text-gradient">Verification</span></h1>
           <p style={{ color: 'var(--text-secondary)' }}>Review and verify user identity documents to ensure platform safety.</p>
@@ -106,92 +106,94 @@ export default async function AdminKYCPage() {
 
       {/* Verification Queue */}
       <Card title="Verification Queue" className="glass">
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {/* Table Header */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: '2fr 1.5fr 1fr 1fr 1fr', 
-            padding: '1rem 0',
-            borderBottom: '1px solid var(--glass-border)',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            color: 'var(--text-muted)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>
-            <div>Member</div>
-            <div>Submission Date</div>
-            <div>Document</div>
-            <div>Status</div>
-            <div style={{ textAlign: 'right' }}>Actions</div>
-          </div>
-
-          {/* Table Body */}
-          {usersWithSignedUrls?.map((usr) => (
-            <div key={usr.id} style={{ 
+        <div className="table-wrapper">
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: '700px' }}>
+            {/* Table Header */}
+            <div style={{ 
               display: 'grid', 
               gridTemplateColumns: '2fr 1.5fr 1fr 1fr 1fr', 
-              padding: '1.25rem 0',
+              padding: '1rem 0',
               borderBottom: '1px solid var(--glass-border)',
-              alignItems: 'center'
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <UserIcon size={16} color="var(--text-secondary)" />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{usr.full_name}</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{usr.email}</span>
-                </div>
-              </div>
-
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                {formatDate(usr.updated_at)}
-              </div>
-
-              <div>
-                {usr.kyc_document_url ? (
-                  <a href={usr.signed_url} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: 'fit-content' }}>
-                    <FileText size={16} />
-                    <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>View ID</span>
-                  </a>
-                ) : (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>No ID</span>
-                )}
-              </div>
-
-              <div>
-                {usr.kyc_verified ? (
-                  <div style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700 }}>
-                    <BadgeCheck size={14} /> Verified
-                  </div>
-                ) : (
-                  <div style={{ color: 'var(--accent-gold)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700 }}>
-                    <Clock size={14} /> Pending
-                  </div>
-                )}
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                {!usr.kyc_verified ? (
-                  <form action={verifyUserKYC.bind(null, usr.id, true) as any}>
-                    <Button size="sm" style={{ padding: '0.5rem 1rem' }}>Verify</Button>
-                  </form>
-                ) : (
-                  <form action={verifyUserKYC.bind(null, usr.id, false) as any}>
-                    <Button size="sm" variant="secondary" style={{ padding: '0.5rem 1rem', color: 'var(--danger)' }}>Revoke</Button>
-                  </form>
-                )}
-              </div>
+              <div>Member</div>
+              <div>Submission Date</div>
+              <div>Document</div>
+              <div>Status</div>
+              <div style={{ textAlign: 'right' }}>Actions</div>
             </div>
-          ))}
 
-          {(!users || users.length === 0) && (
-            <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
-              <AlertCircle size={48} style={{ marginBottom: '1rem', opacity: 0.1 }} />
-              <p>No verification requests found.</p>
-            </div>
-          )}
+            {/* Table Body */}
+            {usersWithSignedUrls?.map((usr) => (
+              <div key={usr.id} style={{ 
+                display: 'grid', 
+                gridTemplateColumns: '2fr 1.5fr 1fr 1fr 1fr', 
+                padding: '1.25rem 0',
+                borderBottom: '1px solid var(--glass-border)',
+                alignItems: 'center'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <UserIcon size={16} color="var(--text-secondary)" />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{usr.full_name}</span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{usr.email}</span>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                  {formatDate(usr.updated_at)}
+                </div>
+
+                <div>
+                  {usr.kyc_document_url ? (
+                    <a href={usr.signed_url} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: 'fit-content' }}>
+                      <FileText size={16} />
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>View ID</span>
+                    </a>
+                  ) : (
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>No ID</span>
+                  )}
+                </div>
+
+                <div>
+                  {usr.kyc_verified ? (
+                    <div style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700 }}>
+                      <BadgeCheck size={14} /> Verified
+                    </div>
+                  ) : (
+                    <div style={{ color: 'var(--accent-gold)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700 }}>
+                      <Clock size={14} /> Pending
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                  {!usr.kyc_verified ? (
+                    <form action={verifyUserKYC.bind(null, usr.id, true) as any}>
+                      <Button size="sm" style={{ padding: '0.5rem 1rem' }}>Verify</Button>
+                    </form>
+                  ) : (
+                    <form action={verifyUserKYC.bind(null, usr.id, false) as any}>
+                      <Button size="sm" variant="secondary" style={{ padding: '0.5rem 1rem', color: 'var(--danger)' }}>Revoke</Button>
+                    </form>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {(!users || users.length === 0) && (
+              <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
+                <AlertCircle size={48} style={{ marginBottom: '1rem', opacity: 0.1 }} />
+                <p>No verification requests found.</p>
+              </div>
+            )}
+          </div>
         </div>
       </Card>
     </div>

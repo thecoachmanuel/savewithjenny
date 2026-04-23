@@ -63,80 +63,82 @@ export function RealtimePaymentTable({ initialPayments }: RealtimePaymentTablePr
   }, [supabase]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {/* Table Header */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: '1.5fr 1.5fr 1fr 1.5fr 1fr 0.5fr', 
-        padding: '1rem 0',
-        borderBottom: '1px solid var(--glass-border)',
-        fontSize: '0.75rem',
-        fontWeight: 700,
-        color: 'var(--text-muted)',
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em'
-      }}>
-        <div>Member</div>
-        <div>Group</div>
-        <div>Amount</div>
-        <div>Reference</div>
-        <div>Status</div>
-        <div></div>
-      </div>
-
-      {/* Table Body */}
-      {payments?.map((payment) => (
-        <div key={payment.id} style={{ 
+    <div className="table-wrapper">
+      <div style={{ display: 'flex', flexDirection: 'column', minWidth: '800px' }}>
+        {/* Table Header */}
+        <div style={{ 
           display: 'grid', 
           gridTemplateColumns: '1.5fr 1.5fr 1fr 1.5fr 1fr 0.5fr', 
-          padding: '1.25rem 0',
+          padding: '1rem 0',
           borderBottom: '1px solid var(--glass-border)',
-          alignItems: 'center',
-          fontSize: '0.875rem',
-          animation: 'fadeIn 0.5s ease-out'
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          color: 'var(--text-muted)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
         }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontWeight: 600 }}>{payment.profiles?.full_name || 'Loading...'}</span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{payment.profiles?.email}</span>
-          </div>
-          
-          <div style={{ color: 'var(--text-secondary)' }}>
-            {payment.groups?.name || 'N/A'}
-          </div>
-
-          <div style={{ fontWeight: 700 }}>
-            {formatCurrency(payment.amount)}
-          </div>
-
-          <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            {payment.paystack_reference}
-          </div>
-
-          <div>
-            <StatusBadge status={payment.status} />
-          </div>
-
-          <div style={{ textAlign: 'right' }}>
-            <Link href={`/admin/payments/${payment.id}`} className="btn-ghost" style={{ padding: '0.5rem' }}>
-              <ChevronRight size={18} />
-            </Link>
-          </div>
+          <div>Member</div>
+          <div>Group</div>
+          <div>Amount</div>
+          <div>Reference</div>
+          <div>Status</div>
+          <div></div>
         </div>
-      ))}
 
-      {(!payments || payments.length === 0) && (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
-          <CreditCard size={48} style={{ marginBottom: '1rem', opacity: 0.1 }} />
-          <p>No payment records found.</p>
-        </div>
-      )}
+        {/* Table Body */}
+        {payments?.map((payment) => (
+          <div key={payment.id} style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1.5fr 1.5fr 1fr 1.5fr 1fr 0.5fr', 
+            padding: '1.25rem 0',
+            borderBottom: '1px solid var(--glass-border)',
+            alignItems: 'center',
+            fontSize: '0.875rem',
+            animation: 'fadeIn 0.5s ease-out'
+          }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontWeight: 600 }}>{payment.profiles?.full_name || 'Loading...'}</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{payment.profiles?.email}</span>
+            </div>
+            
+            <div style={{ color: 'var(--text-secondary)' }}>
+              {payment.groups?.name || 'N/A'}
+            </div>
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-5px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+            <div style={{ fontWeight: 700 }}>
+              {formatCurrency(payment.amount)}
+            </div>
+
+            <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              {payment.paystack_reference}
+            </div>
+
+            <div>
+              <StatusBadge status={payment.status} />
+            </div>
+
+            <div style={{ textAlign: 'right' }}>
+              <Link href={`/admin/payments/${payment.id}`} className="btn-ghost" style={{ padding: '0.5rem' }}>
+                <ChevronRight size={18} />
+              </Link>
+            </div>
+          </div>
+        ))}
+
+        {(!payments || payments.length === 0) && (
+          <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
+            <CreditCard size={48} style={{ marginBottom: '1rem', opacity: 0.1 }} />
+            <p>No payment records found.</p>
+          </div>
+        )}
+
+        <style jsx>{`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+      </div>
     </div>
   );
 }

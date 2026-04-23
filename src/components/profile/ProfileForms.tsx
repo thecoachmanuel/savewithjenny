@@ -51,7 +51,7 @@ export function ProfileForms({ profile }: ProfileFormsProps) {
         className="glass shadow-md"
       >
         <form onSubmit={(e) => handleSubmit(e, 'profile')}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-grid">
             <Input 
               label="Full Name" 
               name="fullName" 
@@ -93,7 +93,7 @@ export function ProfileForms({ profile }: ProfileFormsProps) {
             placeholder="e.g. Zenith Bank" 
             defaultValue={profile?.bank_name} 
           />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-grid">
             <Input 
               label="Account Number" 
               name="bankAccountNumber" 

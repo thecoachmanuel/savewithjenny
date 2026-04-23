@@ -36,7 +36,7 @@ export default async function AdminMembersPage({
 
   return (
     <div className="admin-members-page">
-      <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <header className="header-flex" style={{ marginBottom: '2.5rem' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Member <span className="text-gradient">Directory</span></h1>
           <p style={{ color: 'var(--text-secondary)' }}>Manage all platform members and access payout details for disbursements.</p>

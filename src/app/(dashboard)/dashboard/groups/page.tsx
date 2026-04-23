@@ -148,7 +148,7 @@ function GroupCard({ group, isJoined }: { group: any, isJoined?: boolean }) {
         overflow: 'hidden'
       }}>{group.description}</p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+      <div className="form-grid" style={{ marginBottom: '1.5rem' }}>
         <div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>CONTRIBUTION</div>
           <div style={{ fontWeight: 600 }}>{formatCurrency(group.contribution_amount)}</div>

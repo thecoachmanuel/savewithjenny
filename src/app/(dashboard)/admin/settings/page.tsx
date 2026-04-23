@@ -51,7 +51,7 @@ export default async function AdminSettingsPage() {
         <p style={{ color: 'var(--text-secondary)' }}>Configure brand identity and global financial parameters.</p>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) 1fr', gap: '2rem' }}>
+      <div className="dashboard-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Brand Configuration */}
           <BrandSettings 

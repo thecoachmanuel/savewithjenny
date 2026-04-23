@@ -249,6 +249,12 @@ h3 { font-size: var(--font-size-h3); font-weight: 600; }
   gap: 1.5rem;
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile-first: single column */
+  gap: 1.5rem;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr; /* Mobile-first: single column */
@@ -273,6 +279,10 @@ h3 { font-size: var(--font-size-h3); font-weight: 600; }
 @media (min-width: 768px) {
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
