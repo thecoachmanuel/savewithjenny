@@ -115,7 +115,6 @@ export default async function AdminLoansPage() {
                     <Button type="submit" size="sm" leftIcon={<CheckCircle2 size={16} />}>Approve</Button>
                   </form>
                 </div>
-                </div>
               </div>
             </Card>
           ))}
